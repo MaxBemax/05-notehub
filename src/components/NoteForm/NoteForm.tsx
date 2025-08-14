@@ -1,11 +1,11 @@
 import { ErrorMessage, Field, Form, Formik } from 'formik';
-import type { CreateNoteFields } from '../../types/note';
 import css from './NoteForm.module.css';
 import * as Yup from 'yup';
+import type { CreateNoteFields, NoteTag } from '../../types/note';
 
 interface NoteFormProps {
   onSubmit: (values: CreateNoteFields) => void;
-  onCancel: () => void;
+  onClose: () => void;
 }
 
 const validationSchema = Yup.object({
@@ -19,15 +19,15 @@ const validationSchema = Yup.object({
     .required('This field is required'),
 });
 
-export default function NoteForm({ onSubmit, onCancel }: NoteFormProps) {
+export default function NoteForm({ onSubmit, onClose }: NoteFormProps) {
   return (
     <Formik
-      initialValues={{ title: '', content: '', tag: 'todo' }}
+      initialValues={{ title: '', content: '', tag: 'Todo' as NoteTag }}
       validationSchema={validationSchema}
       onSubmit={onSubmit}
     >
-      {({ isSubmitting }) => (
-        <Form className={css.form}>
+      {({ handleSubmit, isSubmitting }) => (
+        <Form className={css.form} onSubmit={handleSubmit}>
           <div className={css.formGroup}>
             <label htmlFor="title">Title</label>
             <Field id="title" name="title" className={css.input} />
@@ -66,8 +66,7 @@ export default function NoteForm({ onSubmit, onCancel }: NoteFormProps) {
             <button
               type="button"
               className={css.cancelButton}
-              onClick={onCancel}
-              disabled={isSubmitting}
+              onClick={onClose}
             >
               Cancel
             </button>

@@ -1,5 +1,10 @@
 import axios from 'axios';
-import type { CreateNoteFields, FetchNotesResponse, Note } from '../types/note';
+import type { CreateNoteFields, Note } from '../types/note';
+
+export interface FetchNotesResponse {
+  notes: Note[];
+  totalPages: number;
+}
 
 const BASE_URL = 'https://notehub-public.goit.study/api/notes';
 const API_TOKEN = import.meta.env.VITE_NOTEHUB_TOKEN;
@@ -17,7 +22,7 @@ export async function fetchNotes(
   perPage: number = 12,
   search: string = ''
 ): Promise<FetchNotesResponse> {
-  const { data } = await axios.get(BASE_URL, {
+  const { data } = await axios.get<FetchNotesResponse>(BASE_URL, {
     headers,
     params: {
       page,
@@ -29,11 +34,11 @@ export async function fetchNotes(
 }
 
 export async function createNote(note: CreateNoteFields): Promise<Note> {
-  const { data } = await axios.post(BASE_URL, note, { headers });
+  const { data } = await axios.post<Note>(BASE_URL, note, { headers });
   return data;
 }
 
 export async function deleteNote(id: string): Promise<Note> {
-  const { data } = await axios.delete(`${BASE_URL}/${id}`, { headers });
+  const { data } = await axios.delete<Note>(`${BASE_URL}/${id}`, { headers });
   return data;
 }

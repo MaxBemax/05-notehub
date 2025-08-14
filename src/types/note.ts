@@ -1,4 +1,4 @@
-export type NoteTag = 'work' | 'personal' | 'meeting' | 'shopping' | 'todo';
+export type NoteTag = 'Todo' | 'Work' | 'Personal' | 'Meeting' | 'Shopping';
 
 export interface Note {
   id: string;
@@ -13,9 +13,4 @@ export interface CreateNoteFields {
   title: string;
   content: string;
   tag?: NoteTag;
-}
-
-export interface FetchNotesResponse {
-  notes: Note[];
-  totalPages: number;
 }
